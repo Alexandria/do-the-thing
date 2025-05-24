@@ -1,0 +1,9 @@
+.content:hover {
+  cursor: pointer;
+}
+.image:active {
+  box-shadow: 0rem 0.2rem 1rem #ee702d;
+}
+.image:hover {
+  box-shadow: 0rem 0.2rem 1rem #ebc6b2;
+}
