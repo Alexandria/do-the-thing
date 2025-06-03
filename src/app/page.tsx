@@ -42,7 +42,7 @@ export default function Home() {
 
   return (
     <div className="items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] items-center sm:items-start lg:w-6xl md:w-3xl sm:w-lg">
+      <main className="flex flex-col gap-[32px] items-center sm:items-start lg:w-6xl md:w-3xl sm:w-lg size-max">
         <div className="flex flex-row w-full justify-between content-center">
           <h1 className="flex items-center">Today&apos;s Tasks</h1>
           <Link href={"/new-todo"} passHref>
@@ -51,9 +51,12 @@ export default function Home() {
             </button>
           </Link>
         </div>
-        <div className="flex justify-center bg-amber-300 w-full p-5 gap-5 rounded-xl">
+
+        <div className="columns-1 lg:columns-4 gap-3 bg-amber-300 rounded-xl h-fit w-full p-4">
           {data?.map((data) => (
-            <TaskCard key={data.id} data={data} />
+            <div key={data.id} className="mb-4 break-inside-avoid">
+              <TaskCard data={data} />
+            </div>
           ))}
         </div>
       </main>

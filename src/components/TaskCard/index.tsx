@@ -26,7 +26,7 @@ const CheckBox = ({
     <input
       type="checkbox"
       checked={checked}
-      className="checkbox checkbox-success rounded-full absolute top-2 right-2"
+      className="checkbox checkbox-success rounded-full absolute top-2 right-2 border-3"
       onChange={() => setChecked((prev) => !prev)}
       name="complete"
       style={{ top: "0.5rem", right: "0.5rem", position: "absolute" }}
@@ -40,16 +40,17 @@ interface Props {
 }
 
 const TaskCard = ({ data }: Props) => {
-  const [checked, setChecked] = useState(true);
+  const [checked, setChecked] = useState(false);
   return (
     <div
       style={{ position: "relative" }}
-      className="card relative xl:card-side bg-amber-50 rounded-2xl shadow-md h-1/3 lg:w-6xl md:w-3xl sm:w-lg"
+      className="card relative bg-amber-50 rounded-2xl grow"
     >
-      <figure className="xl:w-1/3 lg:w-full md:w-full">
-        <img src={data.image} alt="Todo image" />
-      </figure>
-
+      {data.image && (
+        <figure>
+          <img src={data.image} alt="Todo image" />
+        </figure>
+      )}
       <div className="card-body p-3 sm:pt-0">
         <CheckBox checked={checked} setChecked={setChecked} />
         <div className="lg:mt-8 p-1">
