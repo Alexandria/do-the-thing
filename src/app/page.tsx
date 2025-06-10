@@ -1,6 +1,6 @@
 "use client";
 import TaskCard from "@/components/TaskCard";
-import { supabase } from "@/supabaseClient";
+import { createClient } from "@/supabase/component";
 import { Tables } from "@/types/database.types";
 import { Task } from "@/types/types";
 
@@ -22,6 +22,7 @@ const serializeTasks = (data: Tables<"Tasks">[]): Task[] => {
 
 export default function Home() {
   const [data, setData] = useState<Task[] | null>();
+  const supabase = createClient();
 
   const fetchTasks = async () => {
     const { error, data } = await supabase

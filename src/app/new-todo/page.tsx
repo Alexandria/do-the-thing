@@ -1,7 +1,8 @@
 "use client";
 import ImageDropzone from "@/components/Dropzone";
-import { supabase } from "@/supabaseClient";
+import { supabase } from "../../../utils/supabaseClient";
 import { Action, ActionTypes } from "@/types/types";
+import { redirect } from "next/navigation";
 import { useReducer } from "react";
 
 interface State {
@@ -9,6 +10,7 @@ interface State {
   category: string;
   description?: string;
   image?: string;
+  error?: string;
 }
 
 const initialState: State = {
@@ -16,7 +18,10 @@ const initialState: State = {
   category: "Personal",
   description: "",
   image: "",
+  error: "",
 };
+
+type Task = Omit<State, "error">;
 
 const taskReducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -40,28 +45,76 @@ const taskReducer = (state: State, action: Action): State => {
         ...state,
         image: action.payload,
       };
+    case ActionTypes.SetError:
+      return {
+        ...state,
+        error: action.payload,
+      };
     default:
       return state;
   }
 };
 
+const ErrorAlert = ({
+  message,
+  onDismiss,
+}: {
+  message: string;
+  onDismiss: () => void;
+}) => {
+  return (
+    <div role="alert" className="alert alert-error w-1/5">
+      <div role="button" onClick={onDismiss}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6 shrink-0 stroke-current"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+      </div>
+      <span>{message}</span>
+    </div>
+  );
+};
+
+const SerializeData = (state: State): Task => {
+  const data = { ...state };
+  delete data.error;
+  return data;
+};
+
 export default function NewTodo() {
   const [state, dispatch] = useReducer(taskReducer, initialState);
+  const onDismissError = () => {
+    dispatch({ type: ActionTypes.SetError, payload: "" });
+  };
   const handleCreate = async () => {
-    console.log("**************");
-    console.log("Creating Task");
-    console.log("New task => ", state);
-    console.log("**************");
-    const { error } = await supabase.from("Tasks").insert(state);
-
+    const newTask = SerializeData(state);
+    const { error } = await supabase.from("Tasks").insert(newTask);
     if (error) {
       console.log("Error adding tasks", error.message);
+      dispatch({
+        type: ActionTypes.SetError,
+        payload: `Error adding tasks, ${error.message}`,
+      });
+      return;
     }
+    redirect("/");
   };
 
   return (
-    <main className="flex justify-center items-center min-h-screen">
-      <div className="card w-96 bg-amber-50 card-sm shadow-sm">
+    <main className="flex flex-col justify-center items-center min-h-screen gap-2">
+      {state.error && (
+        <ErrorAlert message={state.error} onDismiss={onDismissError} />
+      )}
+      <div className="card w-1/5 bg-amber-50 card-sm shadow-sm">
         <div className="card-body flex gap-3  p-8">
           <h2 className="card-title">New Thing</h2>
           <label htmlFor="title" className="floating-label bg-amber-50">

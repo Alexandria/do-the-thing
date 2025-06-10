@@ -1,5 +1,5 @@
 "use client";
-import { supabase } from "@/supabaseClient";
+import { supabase } from "../../../utils/supabaseClient";
 import { Action, ActionTypes } from "@/types/types";
 import React, { ActionDispatch, useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";

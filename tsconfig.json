@@ -19,7 +19,7 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*", "./utils/*"]
     }
   },
   "include": [
@@ -27,7 +27,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "supabaseClient.js"
+    "supabaseClient.js",
+    "component.ts"
   ],
   "exclude": ["node_modules"]
 }

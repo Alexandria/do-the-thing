@@ -1,10 +1,11 @@
 "use client";
 import { useState } from "react";
 import { redirect } from "next/navigation";
-import { supabase } from "@/supabaseClient";
+import { createClient } from "../../../utils/supabase/component";
 
 const Avatar = () => {
   const [showDrawer, setShowDrawer] = useState(false);
+  const supabase = createClient();
   const signOut = async () => {
     await supabase.auth.signOut();
     setShowDrawer(false);

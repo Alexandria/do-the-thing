@@ -8,6 +8,7 @@ export const ActionTypes = {
   UpdateCategory: "updateCategory",
   UpdateDescription: "updateDescription",
   UpdateImage: "updateImage",
+  SetError: "setError",
 };
 
 export interface Task {
